@@ -1,8 +1,16 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.18)
 
 project(matplotlibtestproject)
 
-add_subdirectory(external/matplotlib-cpp)
+find_package(
+  Python3
+  COMPONENTS
+  Interpreter
+  Development.Embed
+  Development.Module
+  NumPy
+  REQUIRED
+)
 
 add_executable(
   matplotlibtest
@@ -11,5 +19,14 @@ add_executable(
 
 target_link_libraries(
   matplotlibtest
-  matplotlib-cpp
+  PRIVATE
+  Python3::Python
+  Python3::Module
+  Python3::NumPy
+)
+
+target_include_directories(
+  matplotlibtest
+  PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/external/matplotlib-cpp
 )
